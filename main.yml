@@ -13,7 +13,7 @@
   tasks:
     - name: Execute SQL Statements
       shell: |
-        echo "{{ item }}" | source /etc/profile && {{ ORACLE_HOME }}/bin/sqlplus -S "{{ oracle_user }}/{{ oracle_password }}@{{ oracle_sid }}"
+        echo "{{ item }}" | source /etc/profile && /u01/app/oracle/product/19.0.0/dbhome_1/bin/sqlplus -S "{{ oracle_user }}/{{ oracle_password }}@{{ oracle_sid }}"
       with_items: "{{ sql_statements }}"
       # args:
       #   executable: /bin/bash
