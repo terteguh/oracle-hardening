@@ -20,8 +20,13 @@
         export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
         echo "{{ item }}" | /u01/app/oracle/product/19.0.0/dbhome_1/bin/sqlplus -S / as sysdba
       with_items: "{{ sql_statements }}"
-      register: result0
+      register: result
       # args:
       #   executable: /bin/bash
 
-    - debug: msg="{{ result0.stdout }}"
+
+
+    - name: Print return information from the previous task
+      ansible.builtin.debug:
+        var: result
+        verbosity: 3
