@@ -1,0 +1,19 @@
+---
+- name: Execute SQL Statements on Oracle Database
+  hosts: oracle_db_servers
+  become: true  # Run tasks with elevated privileges (sudo)
+
+  vars:
+    oracle_sid: ORCLCDB1
+    oracle_user: your_oracle_user
+    oracle_password: your_oracle_password
+    sql_statements:
+      - "CREATE TABLE mytable (id NUMBER, name VARCHAR2(255));"
+      - "INSERT INTO mytable (id, name) VALUES (1, 'John');"
+      - "INSERT INTO mytable (id, name) VALUES (2, 'Jane');"
+
+  tasks:
+    - name: Execute SQL Statements
+      shell: |
+        echo "{{ item }}" | sqlplus -S "{{ oracle_user }}/{{ oracle_password }}@{{ oracle_sid }}"
+      with_items: "{{ sql_statements }}"
