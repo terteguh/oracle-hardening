@@ -15,3 +15,5 @@
       shell: |
         echo "{{ item }}" | sqlplus -S "{{ oracle_user }}/{{ oracle_password }}@{{ oracle_sid }}"
       with_items: "{{ sql_statements }}"
+      args:
+        executable: /bin/bash
