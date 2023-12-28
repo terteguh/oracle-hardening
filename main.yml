@@ -13,7 +13,7 @@
   environment:
     ORACLE_HOME: "/u01/app/oracle/product/19.0.0/dbhome_1"
     PATH: "%ORACLE_HOME%\bin;%PATH%"
-    # LD_LIBRARY_PATH: << lib path >>
+    LD_LIBRARY_PATH: "%ORACLE_HOME%/lib:/lib:/usr/lib"
 
   tasks:
     - name: Execute SQL Statements
