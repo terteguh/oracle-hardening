@@ -12,6 +12,8 @@
 
   tasks:
     - name: Execute SQL Statements
+      become: yes
+      become_user: oracle
       shell: |
         echo "{{ item }}" | source /etc/profile && sqlplus -S "{{ oracle_user }}/{{ oracle_password }}@{{ oracle_sid }}"
       with_items: "{{ sql_statements }}"
