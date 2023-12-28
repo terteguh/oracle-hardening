@@ -1,16 +1,14 @@
 ---
 - name: Execute SQL Statements on Oracle Database
-  hosts: oracle_db_servers
+  hosts: all
   become: true  # Run tasks with elevated privileges (sudo)
 
   vars:
-    oracle_sid: ORCLCDB1
-    oracle_user: your_oracle_user
-    oracle_password: your_oracle_password
+    oracle_sid: cdb1
+    oracle_user: oracle
+    oracle_password: oracle
     sql_statements:
-      - "CREATE TABLE mytable (id NUMBER, name VARCHAR2(255));"
-      - "INSERT INTO mytable (id, name) VALUES (1, 'John');"
-      - "INSERT INTO mytable (id, name) VALUES (2, 'Jane');"
+      - "SELECT UPPER(VALUE) FROM V$SYSTEM_PARAMETER WHERE UPPER(NAME) = 'AUDIT_SYS_OPERATIONS';"
 
   tasks:
     - name: Execute SQL Statements
