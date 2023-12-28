@@ -10,15 +10,15 @@
     sql_statements:
       - "SELECT UPPER(VALUE) FROM V$SYSTEM_PARAMETER WHERE UPPER(NAME) = 'AUDIT_SYS_OPERATIONS';"
 
+  environment:
+    ORACLE_HOME: "/u01/app/oracle/product/19.0.0/dbhome_1"
+    PATH: "%ORACLE_HOME%\bin;%PATH%"
+    # LD_LIBRARY_PATH: << lib path >>
 
   tasks:
     - name: Execute SQL Statements
       shell: |
-        export ORACLE_BASE=/u01/app/oracle
-        export ORACLE_HOME=$ORACLE_BASE/product/19.0.0/dbhome_1
-        export PATH=$PATH:/u01/app/oracle/product/19.0.0/dbhome_1
-        export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
-        echo "{{ item }}" | source /etc/profile && sqlplus -S "{{ oracle_user }}/{{ oracle_password }}@{{ oracle_sid }}"
+        echo "{{ item }}" | source /etc/profile && /bin/sqlplus -S "{{ oracle_user }}/{{ oracle_password }}@{{ oracle_sid }}"
       with_items: "{{ sql_statements }}"
       # args:
       #   executable: /bin/bash
