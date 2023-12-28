@@ -1,7 +1,7 @@
 ---
 - name: Execute SQL Statements on Oracle Database
   hosts: all
-  become: true  # Run tasks with elevated privileges (sudo)
+  # become: true  # Run tasks with elevated privileges (sudo)
 
   vars:
     oracle_sid: cdb1
