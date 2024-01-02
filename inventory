@@ -1,0 +1,10 @@
+all:
+  vars:
+    ansible_connection: ssh
+    ansible_user: oracle
+    ansible_password: oracle
+
+
+oraclehost:
+  hosts:
+    192.168.0.22:

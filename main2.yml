@@ -1,9 +1,40 @@
 ---
-- hosts: localhost
-- tasks:
-   - name: Get Object_details 
-     shell: echo exit |sqlplus "{{ oracle_username }}/ {{ oracle_pwd}} @(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host={{ oracle_hostname }} )(Port={{ oracle_port }}))(CONNECT_DATA=(SERVICE_NAME= {{ service_name }})))"@sqlfile.sql;
-     environment:
-          ORACLE_HOME: <<Oracle Home path >>
-          PATH: << bin path >>
-          LD_LIBRARY_PATH: << lib path >>
+- name: Execute SQL Statements on Oracle Database
+  hosts: oraclehost
+  # become: true  # Run tasks with elevated privileges (sudo)
+
+  vars:
+    sql_statements:
+      - "SET DEFINE OFF;"
+      - "SELECT UPPER (VALUE) FROM V$PARAMETER WHERE UPPER(NAME) = 'AUDIT_TRAIL';"
+
+
+  tasks:
+    - name: Execute SQL Statements
+      shell: |
+        export TMP=/tmp
+        export TMPDIR=$TMP
+        export ORACLE_HOSTNAME=ol8-19.localdomain
+        export ORACLE_UNQNAME=cdb1
+        export ORACLE_BASE=/u01/app/oracle
+        export ORACLE_HOME=$ORACLE_BASE/product/19.0.0/dbhome_1
+        export ORA_INVENTORY=/u01/app/oraInventory
+        export ORACLE_SID=cdb1
+        export PDB_NAME=pdb1
+        export DATA_DIR=/u02/oradata
+        export PATH=/usr/sbin:/usr/local/bin:$PATH
+        export PATH=$ORACLE_HOME/bin:$PATH
+        export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
+        export CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
+        echo exit | sqlplus -S / as sysdba @/home/oracle/source/test1.sql
+      # with_items: "{{ sql_statements }}"
+      register: result
+      # args:
+      #   executable: /bin/bash
+
+
+
+    - name: Print return information from the previous task
+      ansible.builtin.debug:
+        var: result
+        verbosity: 3
